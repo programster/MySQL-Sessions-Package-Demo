@@ -1,0 +1,19 @@
+{
+    "require": {
+        "programster/mysql-session-handler": "^1.0",
+        "irap/migrations": "^2.0",
+        "symfony/dotenv": "^6.1"
+    },
+    "config": {
+        "platform" : {
+            "php": "8.1.0",
+            "ext-simplexml": "1",
+            "ext-mbstring": "1",
+            "ext-mysqli": "1",
+            "ext-dom": "1",
+            "ext-xml": "1",
+            "ext-xmlwriter": "1",
+            "ext-curl": "1"
+        }
+    }
+}

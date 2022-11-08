@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sessions-app
+    image: php-session-tester
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+        - db
+    volumes:
+      - ./app:/var/www/site
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=db
+
+  db:
+    image: mariadb:10.5
+    container_name: sessions-db
+    restart: always
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MARIADB_RANDOM_ROOT_PASSWORD=1
+      - MARIADB_USER=${DB_USER}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
+      - MARIADB_DATABASE=${DB_NAME}
+
+volumes:
+  mysql-data:
+    driver: local
