@@ -1,21 +1,26 @@
 <?php
 
-require_once(__DIR__ . '/../vendor/autoload.php'); # this autoloads all vendor packages
+require_once(__DIR__ . '/../bootstrap.php');
 
-$dotenv = new Symfony\Component\Dotenv\Dotenv();
-$dotenv->overload('/.env');
+if (true)
+{
+    $db = new mysqli(
+        $_ENV['DB_HOST'],
+        $_ENV['DB_USER'],
+        $_ENV['DB_PASSWORD'],
+        $_ENV['DB_NAME'],
+    );
 
-$db = new mysqli(
-    $_ENV['DB_HOST'],
-    $_ENV['DB_USER'],
-    $_ENV['DB_PASSWORD'],
-    $_ENV['DB_NAME'],
-);
+    $sessionHandler = new \Programster\SessionHandler\SessionHandler($db, 'sessions');
 
-$sessionHandler = new \Programster\SessionHandler\SessionHandler($db, 'sessions');
+    # Tell PHP to use the handler we just created.
+    session_set_save_handler($sessionHandler, true);
+}
+else
+{
+    print "not using db session." . PHP_EOL;
+}
 
-# Tell PHP to use the handler we just created.
-session_set_save_handler($sessionHandler, true);
 
 session_start();
 
@@ -28,5 +33,9 @@ else
     print "No previous session time variable set.";
 }
 
+print "Accessing non-set variable: " . $_SESSION['someRandomIndex'] . PHP_EOL;
+print "Accessing session key that has value set to null: " . $_SESSION['null_value'] . PHP_EOL;
+
+$_SESSION['null_value'] = null;
 $_SESSION['time_now'] = time();
 

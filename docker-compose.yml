@@ -11,16 +11,16 @@ services:
     ports:
       - "80:80"
     depends_on:
-        - db
+        - sessions-db
     volumes:
       - ./app:/var/www/site
     environment:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
-      - DB_HOST=db
+      - DB_HOST=sessions-db
 
-  db:
+  sessions-db:
     image: mariadb:10.5
     container_name: sessions-db
     restart: always
